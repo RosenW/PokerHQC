@@ -1,2 +1,11 @@
 C:\Users\Big\Desktop\Pokerfix\Poker\bin\Debug\Poker.exe.config
 C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\bin\Debug\Poker.exe.config
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\bin\Debug\Poker.exe
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\bin\Debug\Poker.pdb
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.AddChips.resources
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.Form1.resources
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.Properties.Resources.resources
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.exe
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\obj\Debug\Poker.pdb
