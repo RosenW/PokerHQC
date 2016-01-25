@@ -2575,7 +2575,7 @@ namespace Poker
         private void Call(ref int sChips, ref bool sTurn, Label sStatus)
         {
             raising = false;
-          //  sTurn = false;
+            sTurn = false;
             sChips -= call;
             sStatus.Text = "Call " + call;
             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
