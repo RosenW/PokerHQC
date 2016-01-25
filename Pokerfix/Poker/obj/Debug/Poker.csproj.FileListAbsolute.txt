@@ -1,1 +1,2 @@
 C:\Users\Big\Desktop\Pokerfix\Poker\bin\Debug\Poker.exe.config
+C:\Users\stoiklata\Documents\GitHub\PokerHQC\Pokerfix\Poker\bin\Debug\Poker.exe.config

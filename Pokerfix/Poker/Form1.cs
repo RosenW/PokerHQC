@@ -23,12 +23,12 @@ namespace Poker
         Panel b4Panel = new Panel(); Panel b5Panel = new Panel();
         int call = 500, foldedPlayers = 5;
         public int Chips = 10000, bot1Chips = 10000, bot2Chips = 10000, bot3Chips = 10000, bot4Chips = 10000, bot5Chips = 10000;
-        double type, rounds = 0, b1Power, b2Power, b3Power, b4Power, b5Power, pPower = 0, pType = -1, Raise = 0,
-        b1Type = -1, b2Type = -1, b3Type = -1, b4Type = -1, b5Type = -1;
-        bool B1turn = false, B2turn = false, B3turn = false, B4turn = false, B5turn = false;
+        double type, rounds = 0, botOnePower, botTwoPower, botThreePower, botFourPower, botFivePower, playerPower = 0, playerType = -1, Raise = 0,
+        botOneType = -1, botTwoType = -1, botThreeType = -1, botFourType = -1, botFiveType = -1;
+        bool botOneTurn = false, botTwoTurn = false, botThreeTurn = false, botFourTurn = false, botFiveTurn = false;
         bool B1Fturn = false, B2Fturn = false, B3Fturn = false, B4Fturn = false, B5Fturn = false;
-        bool pFolded, b1Folded, b2Folded, b3Folded, b4Folded, b5Folded, intsadded, changed;
-        int pCall = 0, b1Call = 0, b2Call = 0, b3Call = 0, b4Call = 0, b5Call = 0, pRaise = 0, b1Raise = 0, b2Raise = 0, b3Raise = 0, b4Raise = 0, b5Raise = 0;
+        bool playerFolded, botOneFolded, botTwoFolded, botThreeFolded, botFourFolded, botFiveFolded, intsadded, changed;
+        int playerCall = 0, botOneCall = 0, botTwoCall = 0, botThreeCall = 0, botFourCall = 0, botFiveCall = 0, playerRaise = 0, botOneRaise = 0, botTwoRaise = 0, botThreeRaise = 0, botFourRaise = 0, botFiveRaise = 0;
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         int last = 123, raisedTurn = 1;
         List<bool?> bools = new List<bool?>();
@@ -480,37 +480,35 @@ namespace Poker
         async Task Turns()
         {
             #region Rotating
-            if (!PFturn)
+            if (playerTurn)
             {
-                if (Pturn)
-                {
-                    FixCall(pStatus, ref pCall, ref pRaise, 1);
-                    //MessageBox.Show("Player's Turn");
-                    pbTimer.Visible = true;
-                    pbTimer.Value = 1000;
-                    t = 60;
-                    up = 10000000;
-                    timer.Start();
-                    bRaise.Enabled = true;
-                    bCall.Enabled = true;
-                    bRaise.Enabled = true;
-                    bRaise.Enabled = true;
-                    bFold.Enabled = true;
-                    turnCount++;
-                    FixCall(pStatus, ref pCall, ref pRaise, 2);
-                }
+                FixCall(pStatus, ref playerCall, ref playerRaise, 1);
+                //MessageBox.Show("Player's Turn");
+                pbTimer.Visible = true;
+                pbTimer.Value = 1000;
+                turnTimer = 60;
+                up = 10000000;
+                timer.Start();
+                bRaise.Enabled = true;
+                bCall.Enabled = true;
+                bRaise.Enabled = true;
+                bRaise.Enabled = true;
+                bFold.Enabled = true;
+                turnCount++;
+                FixCall(pStatus, ref playerCall, ref playerRaise, 2);
             }
-            if (PFturn || !Pturn)
+
+            if (playerFinishedHisTurn)
             {
                 await AllIn();
-                if (PFturn && !pFolded)
+                if (playerFinishedHisTurn && !playerFolded)
                 {
                     if (bCall.Text.Contains("All in") == false || bRaise.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        pFolded = true;
+                        playerFolded = true;
                     }
                 }
                 await CheckRaise(0, 0);
@@ -521,152 +519,145 @@ namespace Poker
                 bRaise.Enabled = false;
                 bFold.Enabled = false;
                 timer.Stop();
-                B1turn = true;
-                if (!B1Fturn)
+                botOneTurn = true;
+
+                if (botOneTurn)
                 {
-                    if (B1turn)
-                    {
-                        FixCall(b1Status, ref b1Call, ref b1Raise, 1);
-                        FixCall(b1Status, ref b1Call, ref b1Raise, 2);
-                        Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn);
-                        MessageBox.Show("Bot 1's Turn");
-                        AI(2, 3, ref bot1Chips, ref B1turn, ref  B1Fturn, b1Status, 0, b1Power, b1Type);
-                        turnCount++;
-                        last = 1;
-                        B1turn = false;
-                        B2turn = true;
-                    }
+                    FixCall(b1Status, ref botOneCall, ref botOneRaise, 1);
+                    FixCall(b1Status, ref botOneCall, ref botOneRaise, 2);
+                    Rules(2, 3, "Bot 1", ref botOneType, ref botOnePower, botOneFinishedTurn);
+                    MessageBox.Show("Bot 1's Turn");
+                    Ai(2, 3, ref botOneChips, ref botOneTurn, ref botOneFinishedTurn, b1Status, 0, botOnePower, botOneType);
+                    turnCount++;
+                    last = 1;
+                    botOneTurn = false;
+                    botTwoTurn = true;
                 }
-                if (B1Fturn && !b1Folded)
+
+                if (botOneFinishedTurn && !botOneFolded)
                 {
                     bools.RemoveAt(1);
                     bools.Insert(1, null);
                     maxLeft--;
-                    b1Folded = true;
+                    botOneFolded = true;
                 }
-                if (B1Fturn || !B1turn)
+                if (botOneFinishedTurn)
                 {
                     await CheckRaise(1, 1);
-                    B2turn = true;
+                    botTwoTurn = true;
                 }
-                if (!B2Fturn)
+                if (botTwoTurn)
                 {
-                    if (B2turn)
-                    {
-                        FixCall(b2Status, ref b2Call, ref b2Raise, 1);
-                        FixCall(b2Status, ref b2Call, ref b2Raise, 2);
-                        Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn);
-                        MessageBox.Show("Bot 2's Turn");
-                        AI(4, 5, ref bot2Chips, ref B2turn, ref  B2Fturn, b2Status, 1, b2Power, b2Type);
-                        turnCount++;
-                        last = 2;
-                        B2turn = false;
-                        B3turn = true;
-                    }
+                    FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 1);
+                    FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 2);
+                    Rules(4, 5, "Bot 2", ref botTwoType, ref botTwoPower, botTwoFinishedTurn);
+                    MessageBox.Show("Bot 2's Turn");
+                    Ai(4, 5, ref botTwoChips, ref botTwoTurn, ref botTwoFinishedTurn, b2Status, 1, botTwoPower, botTwoType);
+                    turnCount++;
+                    last = 2;
+                    botTwoTurn = false;
+                    botThreeTurn = true;
                 }
-                if (B2Fturn && !b2Folded)
+                if (botTwoFinishedTurn && !botTwoFolded)
                 {
                     bools.RemoveAt(2);
                     bools.Insert(2, null);
                     maxLeft--;
-                    b2Folded = true;
+                    botTwoFolded = true;
                 }
-                if (B2Fturn || !B2turn)
+                if (botTwoFinishedTurn)
                 {
                     await CheckRaise(2, 2);
-                    B3turn = true;
+                    botThreeTurn = true;
                 }
-                if (!B3Fturn)
+
+                if (botThreeTurn)
                 {
-                    if (B3turn)
-                    {
-                        FixCall(b3Status, ref b3Call, ref b3Raise, 1);
-                        FixCall(b3Status, ref b3Call, ref b3Raise, 2);
-                        Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn);
-                        MessageBox.Show("Bot 3's Turn");
-                        AI(6, 7, ref bot3Chips, ref B3turn, ref  B3Fturn, b3Status, 2, b3Power, b3Type);
-                        turnCount++;
-                        last = 3;
-                        B3turn = false;
-                        B4turn = true;
-                    }
+                    FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 1);
+                    FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 2);
+                    Rules(6, 7, "Bot 3", ref botThreeType, ref botThreePower, botThreeFinishedTurn);
+                    MessageBox.Show("Bot 3's Turn");
+                    Ai(6, 7, ref botThreeChips, ref botThreeTurn, ref botThreeFinishedTurn, b3Status, 2, botThreePower, botThreeType);
+                    turnCount++;
+                    last = 3;
+                    botThreeTurn = false;
+                    botFourTurn = true;
                 }
-                if (B3Fturn && !b3Folded)
+
+                if (botThreeFinishedTurn && !botThreeFolded)
                 {
                     bools.RemoveAt(3);
                     bools.Insert(3, null);
                     maxLeft--;
-                    b3Folded = true;
+                    botThreeFolded = true;
                 }
-                if (B3Fturn || !B3turn)
+                if (botThreeFinishedTurn)
                 {
                     await CheckRaise(3, 3);
-                    B4turn = true;
+                    botFourTurn = true;
                 }
-                if (!B4Fturn)
+
+                if (botFourTurn)
                 {
-                    if (B4turn)
-                    {
-                        FixCall(b4Status, ref b4Call, ref b4Raise, 1);
-                        FixCall(b4Status, ref b4Call, ref b4Raise, 2);
-                        Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn);
-                        MessageBox.Show("Bot 4's Turn");
-                        AI(8, 9, ref bot4Chips, ref B4turn, ref  B4Fturn, b4Status, 3, b4Power, b4Type);
-                        turnCount++;
-                        last = 4;
-                        B4turn = false;
-                        B5turn = true;
-                    }
+                    FixCall(b4Status, ref botFourCall, ref botFourRaise, 1);
+                    FixCall(b4Status, ref botFourCall, ref botFourRaise, 2);
+                    Rules(8, 9, "Bot 4", ref botFourType, ref botFourPower, botFourFinishedTurn);
+                    MessageBox.Show("Bot 4's Turn");
+                    Ai(8, 9, ref botFourChips, ref botFourTurn, ref botFourFinishedTurn, b4Status, 3, botFourPower, botFourType);
+                    turnCount++;
+                    last = 4;
+                    botFourTurn = false;
+                    botFiveTurn = true;
                 }
-                if (B4Fturn && !b4Folded)
+
+                if (botFourFinishedTurn && !botFourFolded)
                 {
                     bools.RemoveAt(4);
                     bools.Insert(4, null);
                     maxLeft--;
-                    b4Folded = true;
+                    botFourFolded = true;
                 }
-                if (B4Fturn || !B4turn)
+                if (botFourFinishedTurn)
                 {
                     await CheckRaise(4, 4);
-                    B5turn = true;
+                    botFiveTurn = true;
                 }
-                if (!B5Fturn)
+
+                if (botFiveTurn)
                 {
-                    if (B5turn)
-                    {
-                        FixCall(b5Status, ref b5Call, ref b5Raise, 1);
-                        FixCall(b5Status, ref b5Call, ref b5Raise, 2);
-                        Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn);
-                        MessageBox.Show("Bot 5's Turn");
-                        AI(10, 11, ref bot5Chips, ref B5turn, ref  B5Fturn, b5Status, 4, b5Power, b5Type);
-                        turnCount++;
-                        last = 5;
-                        B5turn = false;
-                    }
+                    FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 1);
+                    FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 2);
+                    Rules(10, 11, "Bot 5", ref botFiveType, ref botFivePower, botFiveFinishedTurn);
+                    MessageBox.Show("Bot 5's Turn");
+                    Ai(10, 11, ref botFiveChips, ref botFiveTurn, ref botFiveFinishedTurn, b5Status, 4, botFivePower, botFiveType);
+                    turnCount++;
+                    last = 5;
+                    botFiveTurn = false;
                 }
-                if (B5Fturn && !b5Folded)
+
+                if (botFiveFinishedTurn && !botFiveFolded)
                 {
                     bools.RemoveAt(5);
                     bools.Insert(5, null);
                     maxLeft--;
-                    b5Folded = true;
+                    botFiveFolded = true;
                 }
-                if (B5Fturn || !B5turn)
+                if (botFiveFinishedTurn)
                 {
                     await CheckRaise(5, 5);
-                    Pturn = true;
+                    playerTurn = true;
                 }
-                if (PFturn && !pFolded)
+                if (playerFinishedHisTurn && !playerFolded)
                 {
                     if (bCall.Text.Contains("All in") == false || bRaise.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        pFolded = true;
+                        playerFolded = true;
                     }
                 }
-            #endregion
+                #endregion
                 await AllIn();
                 if (!restart)
                 {
@@ -676,7 +667,7 @@ namespace Poker
             }
         }
 
-        void Rules(int c1, int c2, string currentText, ref double current, ref double Power, bool foldedTurn)
+        private void Rules(int c1, int c2, string currentText, ref double current, ref double power, bool foldedTurn)
         {
             if (c1 == 0 && c2 == 1)
             {
@@ -685,73 +676,78 @@ namespace Poker
             {
                 #region Variables
                 bool done = false, vf = false;
-                int[] Straight1 = new int[5];
-                int[] Straight = new int[7];
-                Straight[0] = Reserve[c1];
-                Straight[1] = Reserve[c2];
-                Straight1[0] = Straight[2] = Reserve[12];
-                Straight1[1] = Straight[3] = Reserve[13];
-                Straight1[2] = Straight[4] = Reserve[14];
-                Straight1[3] = Straight[5] = Reserve[15];
-                Straight1[4] = Straight[6] = Reserve[16];
-                var a = Straight.Where(o => o % 4 == 0).ToArray();
-                var b = Straight.Where(o => o % 4 == 1).ToArray();
-                var c = Straight.Where(o => o % 4 == 2).ToArray();
-                var d = Straight.Where(o => o % 4 == 3).ToArray();
+                int[] straight1 = new int[5];
+                int[] straight = new int[7];
+                straight[0] = reserve[c1];
+                straight[1] = reserve[c2];
+                straight1[0] = straight[2] = reserve[12];
+                straight1[1] = straight[3] = reserve[13];
+                straight1[2] = straight[4] = reserve[14];
+                straight1[3] = straight[5] = reserve[15];
+                straight1[4] = straight[6] = reserve[16];
+                var a = straight.Where(o => o % 4 == 0).ToArray();
+                var b = straight.Where(o => o % 4 == 1).ToArray();
+                var c = straight.Where(o => o % 4 == 2).ToArray();
+                var d = straight.Where(o => o % 4 == 3).ToArray();
                 var st1 = a.Select(o => o / 4).Distinct().ToArray();
                 var st2 = b.Select(o => o / 4).Distinct().ToArray();
                 var st3 = c.Select(o => o / 4).Distinct().ToArray();
                 var st4 = d.Select(o => o / 4).Distinct().ToArray();
-                Array.Sort(Straight); Array.Sort(st1); Array.Sort(st2); Array.Sort(st3); Array.Sort(st4);
+                Array.Sort(straight);
+                Array.Sort(st1);
+                Array.Sort(st2);
+                Array.Sort(st3);
+                Array.Sort(st4);
                 #endregion
                 for (i = 0; i < 16; i++)
                 {
-                    if (Reserve[i] == int.Parse(Holder[c1].Tag.ToString()) && Reserve[i + 1] == int.Parse(Holder[c2].Tag.ToString()))
+                    if (reserve[i] == int.Parse(cardHolder[c1].Tag.ToString()) && reserve[i + 1] == int.Parse(cardHolder[c2].Tag.ToString()))
                     {
                         //Pair from Hand current = 1
 
-                        rPairFromHand(ref current, ref Power);
+                        RPairFromHand(ref current, ref power);
 
                         #region Pair or Two Pair from Table current = 2 || 0
-                        rPairTwoPair(ref current, ref Power);
+                        RPairTwoPair(ref current, ref power);
                         #endregion
 
                         #region Two Pair current = 2
-                        rTwoPair(ref current, ref Power);
+                        RTwoPair(ref current, ref power);
                         #endregion
 
                         #region Three of a kind current = 3
-                        rThreeOfAKind(ref current, ref Power, Straight);
+                        RThreeOfAKind(ref current, ref power, straight);
                         #endregion
 
                         #region Straight current = 4
-                        rStraight(ref current, ref Power, Straight);
+                        RStraight(ref current, ref power, straight);
                         #endregion
 
                         #region Flush current = 5 || 5.5
-                        rFlush(ref current, ref Power, ref vf, Straight1);
+                        RFlush(ref current, ref power, ref vf, straight1);
                         #endregion
 
                         #region Full House current = 6
-                        rFullHouse(ref current, ref Power, ref done, Straight);
+                        RFullHouse(ref current, ref power, ref done, straight);
                         #endregion
 
                         #region Four of a Kind current = 7
-                        rFourOfAKind(ref current, ref Power, Straight);
+                        RFourOfAKind(ref current, ref power, straight);
                         #endregion
 
                         #region Straight Flush current = 8 || 9
-                        rStraightFlush(ref current, ref Power, st1, st2, st3, st4);
+                        RStraightFlush(ref current, ref power, st1, st2, st3, st4);
                         #endregion
 
                         #region High Card current = -1
-                        rHighCard(ref current, ref Power);
+                        rHighCard(ref current, ref power);
                         #endregion
                     }
                 }
             }
         }
-        private void rStraightFlush(ref double current, ref double Power, int[] st1, int[] st2, int[] st3, int[] st4)
+
+        private void RStraightFlush(ref double current, ref double power, int[] st1, int[] st2, int[] st3, int[] st4)
         {
             if (current >= -1)
             {
@@ -760,15 +756,15 @@ namespace Poker
                     if (st1[0] + 4 == st1[4])
                     {
                         current = 8;
-                        Power = (st1.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 8 });
+                        power = (st1.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st1[0] == 0 && st1[1] == 9 && st1[2] == 10 && st1[3] == 11 && st1[0] + 12 == st1[4])
                     {
                         current = 9;
-                        Power = (st1.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 9 });
+                        power = (st1.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -777,15 +773,15 @@ namespace Poker
                     if (st2[0] + 4 == st2[4])
                     {
                         current = 8;
-                        Power = (st2.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 8 });
+                        power = (st2.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st2[0] == 0 && st2[1] == 9 && st2[2] == 10 && st2[3] == 11 && st2[0] + 12 == st2[4])
                     {
                         current = 9;
-                        Power = (st2.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 9 });
+                        power = (st2.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -794,15 +790,15 @@ namespace Poker
                     if (st3[0] + 4 == st3[4])
                     {
                         current = 8;
-                        Power = (st3.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 8 });
+                        power = (st3.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st3[0] == 0 && st3[1] == 9 && st3[2] == 10 && st3[3] == 11 && st3[0] + 12 == st3[4])
                     {
                         current = 9;
-                        Power = (st3.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 9 });
+                        power = (st3.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -811,21 +807,21 @@ namespace Poker
                     if (st4[0] + 4 == st4[4])
                     {
                         current = 8;
-                        Power = (st4.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 8 });
+                        power = (st4.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st4[0] == 0 && st4[1] == 9 && st4[2] == 10 && st4[3] == 11 && st4[0] + 12 == st4[4])
                     {
                         current = 9;
-                        Power = (st4.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = Power, Current = 9 });
+                        power = (st4.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
             }
         }
-        private void rFourOfAKind(ref double current, ref double Power, int[] Straight)
+        private void RFourOfAKind(ref double current, ref double Power, int[] Straight)
         {
             if (current >= -1)
             {
@@ -849,7 +845,7 @@ namespace Poker
                 }
             }
         }
-        private void rFullHouse(ref double current, ref double Power, ref bool done, int[] Straight)
+        private void RFullHouse(ref double current, ref double Power, ref bool done, int[] Straight)
         {
             if (current >= -1)
             {
@@ -1879,12 +1875,12 @@ namespace Poker
                     if (Holder[j].Image != Deck[j])
                     {
                         Holder[j].Image = Deck[j];
-                        pCall = 0; pRaise = 0;
-                        b1Call = 0; b1Raise = 0;
-                        b2Call = 0; b2Raise = 0;
-                        b3Call = 0; b3Raise = 0;
-                        b4Call = 0; b4Raise = 0;
-                        b5Call = 0; b5Raise = 0;
+                        playerCall = 0; playerRaise = 0;
+                        botOneCall = 0; botOneRaise = 0;
+                        botTwoCall = 0; botTwoRaise = 0;
+                        botThreeCall = 0; botThreeRaise = 0;
+                        botFourCall = 0; botFourRaise = 0;
+                        botFiveCall = 0; botFiveRaise = 0;
                     }
                 }
             }
@@ -1895,12 +1891,12 @@ namespace Poker
                     if (Holder[j].Image != Deck[j])
                     {
                         Holder[j].Image = Deck[j];
-                        pCall = 0; pRaise = 0;
-                        b1Call = 0; b1Raise = 0;
-                        b2Call = 0; b2Raise = 0;
-                        b3Call = 0; b3Raise = 0;
-                        b4Call = 0; b4Raise = 0;
-                        b5Call = 0; b5Raise = 0;
+                        playerCall = 0; playerRaise = 0;
+                        botOneCall = 0; botOneRaise = 0;
+                        botTwoCall = 0; botTwoRaise = 0;
+                        botThreeCall = 0; botThreeRaise = 0;
+                        botFourCall = 0; botFourRaise = 0;
+                        botFiveCall = 0; botFiveRaise = 0;
                     }
                 }
             }
@@ -1911,12 +1907,12 @@ namespace Poker
                     if (Holder[j].Image != Deck[j])
                     {
                         Holder[j].Image = Deck[j];
-                        pCall = 0; pRaise = 0;
-                        b1Call = 0; b1Raise = 0;
-                        b2Call = 0; b2Raise = 0;
-                        b3Call = 0; b3Raise = 0;
-                        b4Call = 0; b4Raise = 0;
-                        b5Call = 0; b5Raise = 0;
+                        playerCall = 0; playerRaise = 0;
+                        botOneCall = 0; botOneRaise = 0;
+                        botTwoCall = 0; botTwoRaise = 0;
+                        botThreeCall = 0; botThreeRaise = 0;
+                        botFourCall = 0; botFourRaise = 0;
+                        botFiveCall = 0; botFiveRaise = 0;
                     }
                 }
             }
@@ -1926,39 +1922,39 @@ namespace Poker
                 if (!pStatus.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
-                    Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
+                    Rules(0, 1, "Player", ref playerType, ref playerPower, PFturn);
                 }
                 if (!b1Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 1";
-                    Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn);
+                    Rules(2, 3, "Bot 1", ref botOneType, ref botOnePower, B1Fturn);
                 }
                 if (!b2Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 2";
-                    Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn);
+                    Rules(4, 5, "Bot 2", ref botTwoType, ref botTwoPower, B2Fturn);
                 }
                 if (!b3Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 3";
-                    Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn);
+                    Rules(6, 7, "Bot 3", ref botThreeType, ref botThreePower, B3Fturn);
                 }
                 if (!b4Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 4";
-                    Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn);
+                    Rules(8, 9, "Bot 4", ref botFourType, ref botFourPower, B4Fturn);
                 }
                 if (!b5Status.Text.Contains("Fold"))
                 {
                     fixedLast = "Bot 5";
-                    Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn);
+                    Rules(10, 11, "Bot 5", ref botFiveType, ref botFivePower, B5Fturn);
                 }
-                Winner(pType, pPower, "Player", Chips, fixedLast);
-                Winner(b1Type, b1Power, "Bot 1", bot1Chips, fixedLast);
-                Winner(b2Type, b2Power, "Bot 2", bot2Chips, fixedLast);
-                Winner(b3Type, b3Power, "Bot 3", bot3Chips, fixedLast);
-                Winner(b4Type, b4Power, "Bot 4", bot4Chips, fixedLast);
-                Winner(b5Type, b5Power, "Bot 5", bot5Chips, fixedLast);
+                Winner(playerType, playerPower, "Player", Chips, fixedLast);
+                Winner(botOneType, botOnePower, "Bot 1", bot1Chips, fixedLast);
+                Winner(botTwoType, botTwoPower, "Bot 2", bot2Chips, fixedLast);
+                Winner(botThreeType, botThreePower, "Bot 3", bot3Chips, fixedLast);
+                Winner(botFourType, botFourPower, "Bot 4", bot4Chips, fixedLast);
+                Winner(botFiveType, botFivePower, "Bot 5", bot5Chips, fixedLast);
                 restart = true;
                 Pturn = true;
                 PFturn = false;
@@ -1988,21 +1984,21 @@ namespace Poker
                     }
                 }
                 pPanel.Visible = false; b1Panel.Visible = false; b2Panel.Visible = false; b3Panel.Visible = false; b4Panel.Visible = false; b5Panel.Visible = false;
-                pCall = 0; pRaise = 0;
-                b1Call = 0; b1Raise = 0;
-                b2Call = 0; b2Raise = 0;
-                b3Call = 0; b3Raise = 0;
-                b4Call = 0; b4Raise = 0;
-                b5Call = 0; b5Raise = 0;
+                playerCall = 0; playerRaise = 0;
+                botOneCall = 0; botOneRaise = 0;
+                botTwoCall = 0; botTwoRaise = 0;
+                botThreeCall = 0; botThreeRaise = 0;
+                botFourCall = 0; botFourRaise = 0;
+                botFiveCall = 0; botFiveRaise = 0;
                 last = 0;
                 call = bb;
                 Raise = 0;
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 bools.Clear();
                 rounds = 0;
-                pPower = 0; pType = -1;
-                type = 0; b1Power = 0; b2Power = 0; b3Power = 0; b4Power = 0; b5Power = 0;
-                b1Type = -1; b2Type = -1; b3Type = -1; b4Type = -1; b5Type = -1;
+                playerPower = 0; playerType = -1;
+                type = 0; botOnePower = 0; botTwoPower = 0; botThreePower = 0; botFourPower = 0; botFivePower = 0;
+                botOneType = -1; botTwoType = -1; botThreeType = -1; botFourType = -1; botFiveType = -1;
                 ints.Clear();
                 CheckWinners.Clear();
                 winners = 0;
@@ -2208,13 +2204,13 @@ namespace Poker
             pPanel.Visible = false; b1Panel.Visible = false; b2Panel.Visible = false; b3Panel.Visible = false; b4Panel.Visible = false; b5Panel.Visible = false;
             call = bb; Raise = 0;
             foldedPlayers = 5;
-            type = 0; rounds = 0; b1Power = 0; b2Power = 0; b3Power = 0; b4Power = 0; b5Power = 0; pPower = 0; pType = -1; Raise = 0;
-            b1Type = -1; b2Type = -1; b3Type = -1; b4Type = -1; b5Type = -1;
-            B1turn = false; B2turn = false; B3turn = false; B4turn = false; B5turn = false;
+            type = 0; rounds = 0; botOnePower = 0; botTwoPower = 0; botThreePower = 0; botFourPower = 0; botFivePower = 0; playerPower = 0; playerType = -1; Raise = 0;
+            botOneType = -1; botTwoType = -1; botThreeType = -1; botFourType = -1; botFiveType = -1;
+            botOneTurn = false; botTwoTurn = false; botThreeTurn = false; botFourTurn = false; botFiveTurn = false;
             B1Fturn = false; B2Fturn = false; B3Fturn = false; B4Fturn = false; B5Fturn = false;
-            pFolded = false; b1Folded = false; b2Folded = false; b3Folded = false; b4Folded = false; b5Folded = false;
+            playerFolded = false; botOneFolded = false; botTwoFolded = false; botThreeFolded = false; botFourFolded = false; botFiveFolded = false;
             PFturn = false; Pturn = true; restart = false; raising = false;
-            pCall = 0; b1Call = 0; b2Call = 0; b3Call = 0; b4Call = 0; b5Call = 0; pRaise = 0; b1Raise = 0; b2Raise = 0; b3Raise = 0; b4Raise = 0; b5Raise = 0;
+            playerCall = 0; botOneCall = 0; botTwoCall = 0; botThreeCall = 0; botFourCall = 0; botFiveCall = 0; playerRaise = 0; botOneRaise = 0; botTwoRaise = 0; botThreeRaise = 0; botFourRaise = 0; botFiveRaise = 0;
             height = 0; width = 0; winners = 0; Flop = 1; Turn = 2; River = 3; End = 4; maxLeft = 6;
             last = 123; raisedTurn = 1;
             bools.Clear();
@@ -2270,39 +2266,39 @@ namespace Poker
             if (!pStatus.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
-                Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
+                Rules(0, 1, "Player", ref playerType, ref playerPower, PFturn);
             }
             if (!b1Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 1";
-                Rules(2, 3, "Bot 1", ref b1Type, ref b1Power, B1Fturn);
+                Rules(2, 3, "Bot 1", ref botOneType, ref botOnePower, B1Fturn);
             }
             if (!b2Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 2";
-                Rules(4, 5, "Bot 2", ref b2Type, ref b2Power, B2Fturn);
+                Rules(4, 5, "Bot 2", ref botTwoType, ref botTwoPower, B2Fturn);
             }
             if (!b3Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 3";
-                Rules(6, 7, "Bot 3", ref b3Type, ref b3Power, B3Fturn);
+                Rules(6, 7, "Bot 3", ref botThreeType, ref botThreePower, B3Fturn);
             }
             if (!b4Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 4";
-                Rules(8, 9, "Bot 4", ref b4Type, ref b4Power, B4Fturn);
+                Rules(8, 9, "Bot 4", ref botFourType, ref botFourPower, B4Fturn);
             }
             if (!b5Status.Text.Contains("Fold"))
             {
                 fixedLast = "Bot 5";
-                Rules(10, 11, "Bot 5", ref b5Type, ref b5Power, B5Fturn);
+                Rules(10, 11, "Bot 5", ref botFiveType, ref botFivePower, B5Fturn);
             }
-            Winner(pType, pPower, "Player", Chips, fixedLast);
-            Winner(b1Type, b1Power, "Bot 1", bot1Chips, fixedLast);
-            Winner(b2Type, b2Power, "Bot 2", bot2Chips, fixedLast);
-            Winner(b3Type, b3Power, "Bot 3", bot3Chips, fixedLast);
-            Winner(b4Type, b4Power, "Bot 4", bot4Chips, fixedLast);
-            Winner(b5Type, b5Power, "Bot 5", bot5Chips, fixedLast);
+            Winner(playerType, playerPower, "Player", Chips, fixedLast);
+            Winner(botOneType, botOnePower, "Bot 1", bot1Chips, fixedLast);
+            Winner(botTwoType, botTwoPower, "Bot 2", bot2Chips, fixedLast);
+            Winner(botThreeType, botThreePower, "Bot 3", bot3Chips, fixedLast);
+            Winner(botFourType, botFourPower, "Bot 4", bot4Chips, fixedLast);
+            Winner(botFiveType, botFivePower, "Bot 5", bot5Chips, fixedLast);
         }
         void AI(int c1, int c2, ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower, double botCurrent)
         {
@@ -2841,7 +2837,7 @@ namespace Poker
         }
         private async void bCall_Click(object sender, EventArgs e)
         {
-            Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
+            Rules(0, 1, "Player", ref playerType, ref playerPower, PFturn);
             if (Chips >= call)
             {
                 Chips -= call;
@@ -2856,7 +2852,7 @@ namespace Poker
                 }
                 Pturn = false;
                 pStatus.Text = "Call " + call;
-                pCall = call;
+                playerCall = call;
             }
             else if (Chips <= call && call > 0)
             {
@@ -2866,13 +2862,13 @@ namespace Poker
                 tbChips.Text = "Chips : " + Chips.ToString();
                 Pturn = false;
                 bFold.Enabled = false;
-                pCall = Chips;
+                playerCall = Chips;
             }
             await Turns();
         }
         private async void bRaise_Click(object sender, EventArgs e)
         {
-            Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
+            Rules(0, 1, "Player", ref playerType, ref playerPower, PFturn);
             int parsedValue;
             if (tbRaise.Text != "" && int.TryParse(tbRaise.Text, out parsedValue))
             {
@@ -2896,7 +2892,7 @@ namespace Poker
                             Chips -= int.Parse(tbRaise.Text);
                             raising = true;
                             last = 0;
-                            pRaise = Convert.ToInt32(Raise);
+                            playerRaise = Convert.ToInt32(Raise);
                         }
                         else
                         {
@@ -2907,7 +2903,7 @@ namespace Poker
                             Chips = 0;
                             raising = true;
                             last = 0;
-                            pRaise = Convert.ToInt32(Raise);
+                            playerRaise = Convert.ToInt32(Raise);
                         }
                     }
                 }
