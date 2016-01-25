@@ -566,25 +566,27 @@ namespace Poker
         async Task Turns()
         {
             #region Rotating
-            if (playerTurn)
+            if (!playerFinishedHisTurn)
             {
-                FixCall(pStatus, ref playerCall, ref playerRaise, 1);
-                //MessageBox.Show("Player's Turn");
-                pbTimer.Visible = true;
-                pbTimer.Value = 1000;
-                turnTimer = 60;
-                up = 10000000;
-                timer.Start();
-                bRaise.Enabled = true;
-                bCall.Enabled = true;
-                bRaise.Enabled = true;
-                bRaise.Enabled = true;
-                bFold.Enabled = true;
-                turnCount++;
-                FixCall(pStatus, ref playerCall, ref playerRaise, 2);
+                if (playerTurn)
+                {
+                    FixCall(pStatus, ref playerCall, ref playerRaise, 1);
+                    //MessageBox.Show("Player's Turn");
+                    pbTimer.Visible = true;
+                    pbTimer.Value = 1000;
+                    turnTimer = 60;
+                    up = 10000000;
+                    timer.Start();
+                    bRaise.Enabled = true;
+                    bCall.Enabled = true;
+                    bRaise.Enabled = true;
+                    bRaise.Enabled = true;
+                    bFold.Enabled = true;
+                    turnCount++;
+                    FixCall(pStatus, ref playerCall, ref playerRaise, 2);
+                }
             }
-
-            if (playerFinishedHisTurn)
+            if (playerFinishedHisTurn || !playerTurn)
             {
                 await AllIn();
                 if (playerFinishedHisTurn && !playerFolded)
@@ -606,20 +608,21 @@ namespace Poker
                 bFold.Enabled = false;
                 timer.Stop();
                 botOneTurn = true;
-
-                if (botOneTurn)
+                if (!botOneFinishedTurn)
                 {
-                    FixCall(b1Status, ref botOneCall, ref botOneRaise, 1);
-                    FixCall(b1Status, ref botOneCall, ref botOneRaise, 2);
-                    Rules(2, 3, "Bot 1", ref botOneType, ref botOnePower, botOneFinishedTurn);
-                    MessageBox.Show("Bot 1's Turn");
-                    AI(2, 3, ref botOneChips, ref botOneTurn, ref botOneFinishedTurn, b1Status, 0, botOnePower, botOneType);
-                    turnCount++;
-                    last = 1;
-                    botOneTurn = false;
-                    botTwoTurn = true;
+                    if (botOneTurn)
+                    {
+                        FixCall(b1Status, ref botOneCall, ref botOneRaise, 1);
+                        FixCall(b1Status, ref botOneCall, ref botOneRaise, 2);
+                        Rules(2, 3, "Bot 1", ref botOneType, ref botOnePower, botOneFinishedTurn);
+                        MessageBox.Show("Bot 1's Turn");
+                        AI(2, 3, ref botOneChips, ref botOneTurn, ref botOneFinishedTurn, b1Status, 0, botOnePower, botOneType);
+                        turnCount++;
+                        last = 1;
+                        botOneTurn = false;
+                        botTwoTurn = true;
+                    }
                 }
-
                 if (botOneFinishedTurn && !botOneFolded)
                 {
                     bools.RemoveAt(1);
@@ -627,22 +630,25 @@ namespace Poker
                     maxLeft--;
                     botOneFolded = true;
                 }
-                if (botOneFinishedTurn)
+                if (botOneFinishedTurn || !botOneTurn)
                 {
                     await CheckRaise(1, 1);
                     botTwoTurn = true;
                 }
-                if (botTwoTurn)
+                if (!botTwoFinishedTurn)
                 {
-                    FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 1);
-                    FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 2);
-                    Rules(4, 5, "Bot 2", ref botTwoType, ref botTwoPower, botTwoFinishedTurn);
-                    MessageBox.Show("Bot 2's Turn");
-                    AI(4, 5, ref botTwoChips, ref botTwoTurn, ref botTwoFinishedTurn, b2Status, 1, botTwoPower, botTwoType);
-                    turnCount++;
-                    last = 2;
-                    botTwoTurn = false;
-                    botThreeTurn = true;
+                    if (botTwoTurn)
+                    {
+                        FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 1);
+                        FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 2);
+                        Rules(4, 5, "Bot 2", ref botTwoType, ref botTwoPower, botTwoFinishedTurn);
+                        MessageBox.Show("Bot 2's Turn");
+                        AI(4, 5, ref botTwoChips, ref botTwoTurn, ref botTwoFinishedTurn, b2Status, 1, botTwoPower, botTwoType);
+                        turnCount++;
+                        last = 2;
+                        botTwoTurn = false;
+                        botThreeTurn = true;
+                    }
                 }
                 if (botTwoFinishedTurn && !botTwoFolded)
                 {
@@ -651,25 +657,26 @@ namespace Poker
                     maxLeft--;
                     botTwoFolded = true;
                 }
-                if (botTwoFinishedTurn)
+                if (botTwoFinishedTurn || !botTwoTurn)
                 {
                     await CheckRaise(2, 2);
                     botThreeTurn = true;
                 }
-
-                if (botThreeTurn)
+                if (!botThreeFinishedTurn)
                 {
-                    FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 1);
-                    FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 2);
-                    Rules(6, 7, "Bot 3", ref botThreeType, ref botThreePower, botThreeFinishedTurn);
-                    MessageBox.Show("Bot 3's Turn");
-                    AI(6, 7, ref botThreeChips, ref botThreeTurn, ref botThreeFinishedTurn, b3Status, 2, botThreePower, botThreeType);
-                    turnCount++;
-                    last = 3;
-                    botThreeTurn = false;
-                    botFourTurn = true;
+                    if (botThreeTurn)
+                    {
+                        FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 1);
+                        FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 2);
+                        Rules(6, 7, "Bot 3", ref botThreeType, ref botThreePower, botThreeFinishedTurn);
+                        MessageBox.Show("Bot 3's Turn");
+                        AI(6, 7, ref botThreeChips, ref botThreeTurn, ref botThreeFinishedTurn, b3Status, 2, botThreePower, botThreeType);
+                        turnCount++;
+                        last = 3;
+                        botThreeTurn = false;
+                        botFourTurn = true;
+                    }
                 }
-
                 if (botThreeFinishedTurn && !botThreeFolded)
                 {
                     bools.RemoveAt(3);
@@ -677,25 +684,26 @@ namespace Poker
                     maxLeft--;
                     botThreeFolded = true;
                 }
-                if (botThreeFinishedTurn)
+                if (botThreeFinishedTurn || !botThreeTurn)
                 {
                     await CheckRaise(3, 3);
                     botFourTurn = true;
                 }
-
-                if (botFourTurn)
+                if (!botFourFinishedTurn)
                 {
-                    FixCall(b4Status, ref botFourCall, ref botFourRaise, 1);
-                    FixCall(b4Status, ref botFourCall, ref botFourRaise, 2);
-                    Rules(8, 9, "Bot 4", ref botFourType, ref botFourPower, botFourFinishedTurn);
-                    MessageBox.Show("Bot 4's Turn");
-                    AI(8, 9, ref botFourChips, ref botFourTurn, ref botFourFinishedTurn, b4Status, 3, botFourPower, botFourType);
-                    turnCount++;
-                    last = 4;
-                    botFourTurn = false;
-                    botFiveTurn = true;
+                    if (botFourTurn)
+                    {
+                        FixCall(b4Status, ref botFourCall, ref botFourRaise, 1);
+                        FixCall(b4Status, ref botFourCall, ref botFourRaise, 2);
+                        Rules(8, 9, "Bot 4", ref botFourType, ref botFourPower, botFourFinishedTurn);
+                        MessageBox.Show("Bot 4's Turn");
+                        AI(8, 9, ref botFourChips, ref botFourTurn, ref botFourFinishedTurn, b4Status, 3, botFourPower, botFourType);
+                        turnCount++;
+                        last = 4;
+                        botFourTurn = false;
+                        botFiveTurn = true;
+                    }
                 }
-
                 if (botFourFinishedTurn && !botFourFolded)
                 {
                     bools.RemoveAt(4);
@@ -703,24 +711,25 @@ namespace Poker
                     maxLeft--;
                     botFourFolded = true;
                 }
-                if (botFourFinishedTurn)
+                if (botFourFinishedTurn || !botFourTurn)
                 {
                     await CheckRaise(4, 4);
                     botFiveTurn = true;
                 }
-
-                if (botFiveTurn)
+                if (!botFiveFinishedTurn)
                 {
-                    FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 1);
-                    FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 2);
-                    Rules(10, 11, "Bot 5", ref botFiveType, ref botFivePower, botFiveFinishedTurn);
-                    MessageBox.Show("Bot 5's Turn");
-                    AI(10, 11, ref botFiveChips, ref botFiveTurn, ref botFiveFinishedTurn, b5Status, 4, botFivePower, botFiveType);
-                    turnCount++;
-                    last = 5;
-                    botFiveTurn = false;
+                    if (botFiveTurn)
+                    {
+                        FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 1);
+                        FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 2);
+                        Rules(10, 11, "Bot 5", ref botFiveType, ref botFivePower, botFiveFinishedTurn);
+                        MessageBox.Show("Bot 5's Turn");
+                        AI(10, 11, ref botFiveChips, ref botFiveTurn, ref botFiveFinishedTurn, b5Status, 4, botFivePower, botFiveType);
+                        turnCount++;
+                        last = 5;
+                        botFiveTurn = false;
+                    }
                 }
-
                 if (botFiveFinishedTurn && !botFiveFolded)
                 {
                     bools.RemoveAt(5);
@@ -728,7 +737,7 @@ namespace Poker
                     maxLeft--;
                     botFiveFolded = true;
                 }
-                if (botFiveFinishedTurn)
+                if (botFiveFinishedTurn || !botFiveTurn)
                 {
                     await CheckRaise(5, 5);
                     playerTurn = true;
@@ -753,87 +762,82 @@ namespace Poker
             }
         }
 
-        private void Rules(int cardOne, int cardTwo, string currentText, ref double currentHand, ref double power, bool foldedTurn)
+        void Rules(int c1, int c2, string currentText, ref double current, ref double Power, bool foldedTurn)
         {
-            if (cardOne == 0 && cardTwo == 1)
+            if (c1 == 0 && c2 == 1)
             {
             }
-            if (!foldedTurn || cardOne == 0 && cardTwo == 1 && pStatus.Text.Contains("Fold") == false)
+            if (!foldedTurn || c1 == 0 && c2 == 1 && pStatus.Text.Contains("Fold") == false)
             {
                 #region Variables
                 bool done = false, vf = false;
-                int[] straight1 = new int[5];
-                int[] straight = new int[7];
-                straight[0] = reserve[cardOne];
-                straight[1] = reserve[cardTwo];
-                straight1[0] = straight[2] = reserve[12];
-                straight1[1] = straight[3] = reserve[13];
-                straight1[2] = straight[4] = reserve[14];
-                straight1[3] = straight[5] = reserve[15];
-                straight1[4] = straight[6] = reserve[16];
-                var a = straight.Where(o => o % 4 == 0).ToArray();
-                var b = straight.Where(o => o % 4 == 1).ToArray();
-                var c = straight.Where(o => o % 4 == 2).ToArray();
-                var d = straight.Where(o => o % 4 == 3).ToArray();
+                int[] Straight1 = new int[5];
+                int[] Straight = new int[7];
+                Straight[0] = reserve[c1];
+                Straight[1] = reserve[c2];
+                Straight1[0] = Straight[2] = reserve[12];
+                Straight1[1] = Straight[3] = reserve[13];
+                Straight1[2] = Straight[4] = reserve[14];
+                Straight1[3] = Straight[5] = reserve[15];
+                Straight1[4] = Straight[6] = reserve[16];
+                var a = Straight.Where(o => o % 4 == 0).ToArray();
+                var b = Straight.Where(o => o % 4 == 1).ToArray();
+                var c = Straight.Where(o => o % 4 == 2).ToArray();
+                var d = Straight.Where(o => o % 4 == 3).ToArray();
                 var st1 = a.Select(o => o / 4).Distinct().ToArray();
                 var st2 = b.Select(o => o / 4).Distinct().ToArray();
                 var st3 = c.Select(o => o / 4).Distinct().ToArray();
                 var st4 = d.Select(o => o / 4).Distinct().ToArray();
-                Array.Sort(straight);
-                Array.Sort(st1);
-                Array.Sort(st2);
-                Array.Sort(st3);
-                Array.Sort(st4);
+                Array.Sort(Straight); Array.Sort(st1); Array.Sort(st2); Array.Sort(st3); Array.Sort(st4);
                 #endregion
                 for (i = 0; i < 16; i++)
                 {
-                    if (reserve[i] == int.Parse(cardHolder[cardOne].Tag.ToString()) && reserve[i + 1] == int.Parse(cardHolder[cardTwo].Tag.ToString()))
+                    if (reserve[i] == int.Parse(cardHolder[c1].Tag.ToString()) && reserve[i + 1] == int.Parse(cardHolder[c2].Tag.ToString()))
                     {
-                        //Pair from Hand currentHand = 1
+                        //Pair from Hand current = 1
 
-                        RPairFromHand(ref currentHand, ref power);
+                        RPairFromHand(ref current, ref Power);
 
-                        #region Pair or Two Pair from Table currentHand = 2 || 0
-                        RPairTwoPair(ref currentHand, ref power);
+                        #region Pair or Two Pair from Table current = 2 || 0
+                        RPairTwoPair(ref current, ref Power);
                         #endregion
 
-                        #region Two Pair currentHand = 2
-                        RTwoPair(ref currentHand, ref power);
+                        #region Two Pair current = 2
+                        RTwoPair(ref current, ref Power);
                         #endregion
 
-                        #region Three of a kind currentHand = 3
-                        RThreeOfAKind(ref currentHand, ref power, straight);
+                        #region Three of a kind current = 3
+                        RThreeOfAKind(ref current, ref Power, Straight);
                         #endregion
 
-                        #region straight currentHand = 4
-                        RStraight(ref currentHand, ref power, straight);
+                        #region Straight current = 4
+                        RStraight(ref current, ref Power, Straight);
                         #endregion
 
-                        #region Flush currentHand = 5 || 5.5
-                        RFlush(ref currentHand, ref power, ref vf, straight1);
+                        #region Flush current = 5 || 5.5
+                        RFlush(ref current, ref Power, ref vf, Straight1);
                         #endregion
 
-                        #region Full House currentHand = 6
-                        RFullHouse(ref currentHand, ref power, ref done, straight);
+                        #region Full House current = 6
+                        RFullHouse(ref current, ref Power, ref done, Straight);
                         #endregion
 
-                        #region Four of a Kind currentHand = 7
-                        RFourOfAKind(ref currentHand, ref power, straight);
+                        #region Four of a Kind current = 7
+                        RFourOfAKind(ref current, ref Power, Straight);
                         #endregion
 
-                        #region straight Flush currentHand = 8 || 9
-                        RStraightFlush(ref currentHand, ref power, st1, st2, st3, st4);
+                        #region Straight Flush current = 8 || 9
+                        rStraightFlush(ref current, ref Power, st1, st2, st3, st4);
                         #endregion
 
-                        #region High Card currentHand = -1
-                        RHighCard(ref currentHand, ref power);
+                        #region High Card current = -1
+                        RHighCard(ref current, ref Power);
                         #endregion
                     }
                 }
             }
         }
-
-        private void RStraightFlush(ref double current, ref double power, int[] st1, int[] st2, int[] st3, int[] st4)
+        private void rStraightFlush(ref double current, ref double Power, int[] st1, int[] st2, int[] st3, int[] st4)
         {
             if (current >= -1)
             {
@@ -842,15 +846,15 @@ namespace Poker
                     if (st1[0] + 4 == st1[4])
                     {
                         current = 8;
-                        power = (st1.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 8 });
+                        Power = (st1.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st1[0] == 0 && st1[1] == 9 && st1[2] == 10 && st1[3] == 11 && st1[0] + 12 == st1[4])
                     {
                         current = 9;
-                        power = (st1.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 9 });
+                        Power = (st1.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -859,15 +863,15 @@ namespace Poker
                     if (st2[0] + 4 == st2[4])
                     {
                         current = 8;
-                        power = (st2.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 8 });
+                        Power = (st2.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st2[0] == 0 && st2[1] == 9 && st2[2] == 10 && st2[3] == 11 && st2[0] + 12 == st2[4])
                     {
                         current = 9;
-                        power = (st2.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 9 });
+                        Power = (st2.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -876,15 +880,15 @@ namespace Poker
                     if (st3[0] + 4 == st3[4])
                     {
                         current = 8;
-                        power = (st3.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 8 });
+                        Power = (st3.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st3[0] == 0 && st3[1] == 9 && st3[2] == 10 && st3[3] == 11 && st3[0] + 12 == st3[4])
                     {
                         current = 9;
-                        power = (st3.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 9 });
+                        Power = (st3.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -893,15 +897,15 @@ namespace Poker
                     if (st4[0] + 4 == st4[4])
                     {
                         current = 8;
-                        power = (st4.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 8 });
+                        Power = (st4.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 8 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                     if (st4[0] == 0 && st4[1] == 9 && st4[2] == 10 && st4[3] == 11 && st4[0] + 12 == st4[4])
                     {
                         current = 9;
-                        power = (st4.Max()) / 4 + current * 100;
-                        Win.Add(new Type() { Power = power, Current = 9 });
+                        Power = (st4.Max()) / 4 + current * 100;
+                        Win.Add(new Type() { Power = Power, Current = 9 });
                         sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                     }
                 }
@@ -931,14 +935,14 @@ namespace Poker
                 }
             }
         }
-        private void RFullHouse(ref double current, ref double power, ref bool done, int[] straight)
+        private void RFullHouse(ref double current, ref double Power, ref bool done, int[] Straight)
         {
             if (current >= -1)
             {
-                type = power;
+                type = Power;
                 for (int j = 0; j <= 12; j++)
                 {
-                    var fh = straight.Where(o => o / 4 == j).ToArray();
+                    var fh = Straight.Where(o => o / 4 == j).ToArray();
                     if (fh.Length == 3 || done)
                     {
                         if (fh.Length == 2)
@@ -946,16 +950,16 @@ namespace Poker
                             if (fh.Max() / 4 == 0)
                             {
                                 current = 6;
-                                power = 13 * 2 + current * 100;
-                                Win.Add(new Type() { Power = power, Current = 6 });
+                                Power = 13 * 2 + current * 100;
+                                Win.Add(new Type() { Power = Power, Current = 6 });
                                 sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                                 break;
                             }
                             if (fh.Max() / 4 > 0)
                             {
                                 current = 6;
-                                power = fh.Max() / 4 * 2 + current * 100;
-                                Win.Add(new Type() { Power = power, Current = 6 });
+                                Power = fh.Max() / 4 * 2 + current * 100;
+                                Win.Add(new Type() { Power = Power, Current = 6 });
                                 sorted = Win.OrderByDescending(op1 => op1.Current).ThenByDescending(op1 => op1.Power).First();
                                 break;
                             }
@@ -964,13 +968,13 @@ namespace Poker
                         {
                             if (fh.Max() / 4 == 0)
                             {
-                                power = 13;
+                                Power = 13;
                                 done = true;
                                 j = -1;
                             }
                             else
                             {
-                                power = fh.Max() / 4;
+                                Power = fh.Max() / 4;
                                 done = true;
                                 j = -1;
                             }
@@ -979,7 +983,7 @@ namespace Poker
                 }
                 if (current != 6)
                 {
-                    power = type;
+                    Power = type;
                 }
             }
         }
