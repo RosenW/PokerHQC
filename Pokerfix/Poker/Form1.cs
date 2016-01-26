@@ -29,6 +29,7 @@ namespace Poker
         private int call = 500;
         private int foldedPlayers = 5;
 
+
         private int Chips = 10000;
         private int botOneChips = 10000;
         private int botTwoChips = 10000;
@@ -36,14 +37,19 @@ namespace Poker
         private int botFourChips = 10000;
         private int botFiveChips = 10000;
 
+
         private double type;
         private double rounds = 0;
+
+
         private double botOnePower;
         private double botTwoPower;
         private double botThreePower;
         private double botFourPower;
         private double botFivePower;
         private double playerPower = 0;
+
+
         private double playerType = -1;
         private double Raise = 0;
         private double botOneType = -1;
@@ -52,11 +58,13 @@ namespace Poker
         private double botFourType = -1;
         private double botFiveType = -1;
 
+
         private bool botOneTurn = false;
         private bool botTwoTurn = false;
         private bool botThreeTurn = false;
         private bool botFourTurn = false;
         private bool botFiveTurn = false;
+
 
         private bool botOneFinishedTurn = false;
         private bool botTwoFinishedTurn = false;
@@ -64,26 +72,34 @@ namespace Poker
         private bool botFourFinishedTurn = false;
         private bool botFiveFinishedTurn = false;
 
+
         private bool playerFolded;
         private bool botOneFolded;
         private bool botTwoFolded;
         private bool botThreeFolded;
         private bool botFourFolded;
         private bool botFiveFolded;
+
+
         private bool intsadded;
         private bool changed;
+
+
         private int playerCall = 0;
         private int botOneCall = 0;
         private int botTwoCall = 0;
         private int botThreeCall = 0;
         private int botFourCall = 0;
         private int botFiveCall = 0;
+
+
         private int playerRaise = 0;
         private int botOneRaise = 0;
         private int botTwoRaise = 0;
         private int botThreeRaise = 0;
         private int botFourRaise = 0;
         private int botFiveRaise = 0;
+
 
         private int height;
         private int width;
@@ -526,8 +542,7 @@ namespace Poker
         async Task Turns()
         {
             #region Rotating
-            if (!playerFinishedTurn)
-            {
+            
                 if (playerTurn)
                 {
                     FixCall(pStatus, ref playerCall, ref playerRaise, 1);
@@ -545,7 +560,7 @@ namespace Poker
                     turnCount++;
                     FixCall(pStatus, ref playerCall, ref playerRaise, 2);
                 }
-            }
+            
             if (playerFinishedTurn || !playerTurn)
             {
                 await AllIn();
@@ -568,8 +583,7 @@ namespace Poker
                 bFold.Enabled = false;
                 timer.Stop();
                 botOneTurn = true;
-                if (!botOneFinishedTurn)
-                {
+                
                     if (botOneTurn)
                     {
                         FixCall(b1Status, ref botOneCall, ref botOneRaise, 1);
@@ -582,7 +596,7 @@ namespace Poker
                         botOneTurn = false;
                         botTwoTurn = true;
                     }
-                }
+                
                 if (botOneFinishedTurn && !botOneFolded)
                 {
                     bools.RemoveAt(1);
@@ -595,8 +609,7 @@ namespace Poker
                     await CheckRaise(1, 1);
                     botTwoTurn = true;
                 }
-                if (!botTwoFinishedTurn)
-                {
+               
                     if (botTwoTurn)
                     {
                         FixCall(b2Status, ref botTwoCall, ref botTwoRaise, 1);
@@ -609,7 +622,7 @@ namespace Poker
                         botTwoTurn = false;
                         botThreeTurn = true;
                     }
-                }
+                
                 if (botTwoFinishedTurn && !botTwoFolded)
                 {
                     bools.RemoveAt(2);
@@ -622,8 +635,7 @@ namespace Poker
                     await CheckRaise(2, 2);
                     botThreeTurn = true;
                 }
-                if (!botThreeFinishedTurn)
-                {
+               
                     if (botThreeTurn)
                     {
                         FixCall(b3Status, ref botThreeCall, ref botThreeRaise, 1);
@@ -636,7 +648,7 @@ namespace Poker
                         botThreeTurn = false;
                         botFourTurn = true;
                     }
-                }
+                
                 if (botThreeFinishedTurn && !botThreeFolded)
                 {
                     bools.RemoveAt(3);
@@ -649,8 +661,7 @@ namespace Poker
                     await CheckRaise(3, 3);
                     botFourTurn = true;
                 }
-                if (!botFourFinishedTurn)
-                {
+                
                     if (botFourTurn)
                     {
                         FixCall(b4Status, ref botFourCall, ref botFourRaise, 1);
@@ -663,7 +674,7 @@ namespace Poker
                         botFourTurn = false;
                         botFiveTurn = true;
                     }
-                }
+                
                 if (botFourFinishedTurn && !botFourFolded)
                 {
                     bools.RemoveAt(4);
@@ -676,8 +687,7 @@ namespace Poker
                     await CheckRaise(4, 4);
                     botFiveTurn = true;
                 }
-                if (!botFiveFinishedTurn)
-                {
+                
                     if (botFiveTurn)
                     {
                         FixCall(b5Status, ref botFiveCall, ref botFiveRaise, 1);
@@ -689,7 +699,7 @@ namespace Poker
                         lastPlayerPlayed = 5;
                         botFiveTurn = false;
                     }
-                }
+                
                 if (botFiveFinishedTurn && !botFiveFolded)
                 {
                     bools.RemoveAt(5);
@@ -1718,7 +1728,7 @@ namespace Poker
             }
         }
 
-        void Winner(double current, double Power, string currentText, int chips, string lastly)
+        void Winner(double current, double power, string currentText, int chips, string lastly)
         {
             if (lastly == " ")
             {
@@ -1732,7 +1742,7 @@ namespace Poker
             }
             if (current == sorted.Current)
             {
-                if (Power == sorted.Power)
+                if (power == sorted.Power)
                 {
                     winners++;
                     CheckWinners.Add(currentText);
