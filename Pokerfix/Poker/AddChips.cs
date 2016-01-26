@@ -12,7 +12,7 @@ namespace Poker
 {
     public partial class AddChips : Form
     {
-        public int a=0;
+        public int chips = 0;
         public AddChips()
         {
             FontFamily fontFamily = new FontFamily("Arial");
@@ -37,7 +37,7 @@ namespace Poker
             }
             else if (int.TryParse(textBox1.Text, out parsedValue) && int.Parse(textBox1.Text) <= 100000000)
             {
-                a = int.Parse(textBox1.Text);
+                chips = int.Parse(textBox1.Text);
                 this.Close();
             }
         }
