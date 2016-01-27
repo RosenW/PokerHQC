@@ -116,12 +116,12 @@
             this.pbTimer.TabIndex = 5;
             this.pbTimer.Value = 1000;
             // 
-            // tbPlayerChips
+            // tbChips
             // 
             this.tbPlayerChips.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.tbPlayerChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbPlayerChips.Location = new System.Drawing.Point(755, 553);
-            this.tbPlayerChips.Name = "tbPlayerChips";
+            this.tbPlayerChips.Name = "tbChips";
             this.tbPlayerChips.Size = new System.Drawing.Size(163, 23);
             this.tbPlayerChips.TabIndex = 6;
             this.tbPlayerChips.Text = "Chips : 0";
@@ -145,51 +145,51 @@
             this.tbAdd.Size = new System.Drawing.Size(125, 20);
             this.tbAdd.TabIndex = 8;
             // 
-            // tbBotFiveChips
+            // tbBotChips5
             // 
             this.tbBotFiveChips.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBotFiveChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbBotFiveChips.Location = new System.Drawing.Point(1012, 553);
-            this.tbBotFiveChips.Name = "tbBotFiveChips";
+            this.tbBotFiveChips.Name = "tbBotChips5";
             this.tbBotFiveChips.Size = new System.Drawing.Size(152, 23);
             this.tbBotFiveChips.TabIndex = 9;
             this.tbBotFiveChips.Text = "Chips : 0";
             // 
-            // tbBotFourChips
+            // tbBotChips4
             // 
             this.tbBotFourChips.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBotFourChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbBotFourChips.Location = new System.Drawing.Point(970, 81);
-            this.tbBotFourChips.Name = "tbBotFourChips";
+            this.tbBotFourChips.Name = "tbBotChips4";
             this.tbBotFourChips.Size = new System.Drawing.Size(123, 23);
             this.tbBotFourChips.TabIndex = 10;
             this.tbBotFourChips.Text = "Chips : 0";
             // 
-            // tbBotThreeChips
+            // tbBotChips3
             // 
             this.tbBotThreeChips.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBotThreeChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbBotThreeChips.Location = new System.Drawing.Point(755, 81);
-            this.tbBotThreeChips.Name = "tbBotThreeChips";
+            this.tbBotThreeChips.Name = "tbBotChips3";
             this.tbBotThreeChips.Size = new System.Drawing.Size(125, 23);
             this.tbBotThreeChips.TabIndex = 11;
             this.tbBotThreeChips.Text = "Chips : 0";
             // 
-            // tbBotTwoChips
+            // tbBotChips2
             // 
             this.tbBotTwoChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbBotTwoChips.Location = new System.Drawing.Point(276, 81);
-            this.tbBotTwoChips.Name = "tbBotTwoChips";
+            this.tbBotTwoChips.Name = "tbBotChips2";
             this.tbBotTwoChips.Size = new System.Drawing.Size(133, 23);
             this.tbBotTwoChips.TabIndex = 12;
             this.tbBotTwoChips.Text = "Chips : 0";
             // 
-            // tbBotOneChips
+            // tbBotChips1
             // 
             this.tbBotOneChips.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBotOneChips.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbBotOneChips.Location = new System.Drawing.Point(181, 553);
-            this.tbBotOneChips.Name = "tbBotOneChips";
+            this.tbBotOneChips.Name = "tbBotChips1";
             this.tbBotOneChips.Size = new System.Drawing.Size(142, 23);
             this.tbBotOneChips.TabIndex = 13;
             this.tbBotOneChips.Text = "Chips : 0";
@@ -215,86 +215,86 @@
             this.bOptions.UseVisualStyleBackColor = true;
             this.bOptions.Click += new System.EventHandler(this.bOptions_Click);
             // 
-            // bBigBlind
+            // bBB
             // 
             this.bBigBlind.Location = new System.Drawing.Point(12, 254);
-            this.bBigBlind.Name = "bBigBlind";
+            this.bBigBlind.Name = "bBB";
             this.bBigBlind.Size = new System.Drawing.Size(75, 23);
             this.bBigBlind.TabIndex = 16;
             this.bBigBlind.Text = "Big Blind";
             this.bBigBlind.UseVisualStyleBackColor = true;
             this.bBigBlind.Click += new System.EventHandler(this.bBB_Click);
             // 
-            // tbSmallBlind
+            // tbSB
             // 
             this.tbSmallBlind.Location = new System.Drawing.Point(12, 228);
-            this.tbSmallBlind.Name = "tbSmallBlind";
+            this.tbSmallBlind.Name = "tbSB";
             this.tbSmallBlind.Size = new System.Drawing.Size(75, 20);
             this.tbSmallBlind.TabIndex = 17;
             this.tbSmallBlind.Text = "250";
             // 
-            // bSmallBlind
+            // bSB
             // 
             this.bSmallBlind.Location = new System.Drawing.Point(12, 199);
-            this.bSmallBlind.Name = "bSmallBlind";
+            this.bSmallBlind.Name = "bSB";
             this.bSmallBlind.Size = new System.Drawing.Size(75, 23);
             this.bSmallBlind.TabIndex = 18;
             this.bSmallBlind.Text = "Small Blind";
             this.bSmallBlind.UseVisualStyleBackColor = true;
             this.bSmallBlind.Click += new System.EventHandler(this.bSB_Click);
             // 
-            // tbBigBlind
+            // tbBB
             // 
             this.tbBigBlind.Location = new System.Drawing.Point(12, 283);
-            this.tbBigBlind.Name = "tbBigBlind";
+            this.tbBigBlind.Name = "tbBB";
             this.tbBigBlind.Size = new System.Drawing.Size(75, 20);
             this.tbBigBlind.TabIndex = 19;
             this.tbBigBlind.Text = "500";
             // 
-            // botFiveStatus
+            // b5Status
             // 
             this.botFiveStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.botFiveStatus.Location = new System.Drawing.Point(1012, 579);
-            this.botFiveStatus.Name = "botFiveStatus";
+            this.botFiveStatus.Name = "b5Status";
             this.botFiveStatus.Size = new System.Drawing.Size(152, 32);
             this.botFiveStatus.TabIndex = 26;
             // 
-            // botFourStatus
+            // b4Status
             // 
             this.botFourStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.botFourStatus.Location = new System.Drawing.Point(970, 107);
-            this.botFourStatus.Name = "botFourStatus";
+            this.botFourStatus.Name = "b4Status";
             this.botFourStatus.Size = new System.Drawing.Size(123, 32);
             this.botFourStatus.TabIndex = 27;
             // 
-            // botThreeStatus
+            // b3Status
             // 
             this.botThreeStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.botThreeStatus.Location = new System.Drawing.Point(755, 107);
-            this.botThreeStatus.Name = "botThreeStatus";
+            this.botThreeStatus.Name = "b3Status";
             this.botThreeStatus.Size = new System.Drawing.Size(125, 32);
             this.botThreeStatus.TabIndex = 28;
             // 
-            // botOneStatus
+            // b1Status
             // 
             this.botOneStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botOneStatus.Location = new System.Drawing.Point(181, 579);
-            this.botOneStatus.Name = "botOneStatus";
+            this.botOneStatus.Name = "b1Status";
             this.botOneStatus.Size = new System.Drawing.Size(142, 32);
             this.botOneStatus.TabIndex = 29;
             // 
-            // pplayerStatus
+            // pStatus
             // 
             this.playerStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.playerStatus.Location = new System.Drawing.Point(755, 579);
-            this.playerStatus.Name = "playerStatus";
+            this.playerStatus.Name = "pStatus";
             this.playerStatus.Size = new System.Drawing.Size(163, 32);
             this.playerStatus.TabIndex = 30;
             // 
-            // botTwoStatus
+            // b2Status
             // 
             this.botTwoStatus.Location = new System.Drawing.Point(276, 107);
-            this.botTwoStatus.Name = "botTwoStatus";
+            this.botTwoStatus.Name = "b2Status";
             this.botTwoStatus.Size = new System.Drawing.Size(133, 32);
             this.botTwoStatus.TabIndex = 31;
             // 
@@ -353,7 +353,6 @@
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "GLS Texas Poker";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout_Change);
             this.ResumeLayout(false);
             this.PerformLayout();
