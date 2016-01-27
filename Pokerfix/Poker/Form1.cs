@@ -104,10 +104,10 @@ namespace Poker
         private int height;
         private int width;
         private int winners = 0;
-        private int Flop = 1;
-        private int Turn = 2;
-        private int River = 3;
-        private int End = 4;
+        private const int FLOP = 1;
+        private const int TURN = 2;
+        private const int RIVER = 3;
+        private const int END = 4;
         private int maxLeft = 6;
         private int lastPlayerPlayed = -1;
         private int raisedTurn = 1;
@@ -1612,7 +1612,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == Flop)
+            if (rounds == FLOP)
             {
                 for (int j = 12; j <= 14; j++)
                 {
@@ -1628,7 +1628,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == Turn)
+            if (rounds == TURN)
             {
                 for (int j = 14; j <= 15; j++)
                 {
@@ -1644,7 +1644,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == River)
+            if (rounds == RIVER)
             {
                 for (int j = 15; j <= 16; j++)
                 {
@@ -1660,7 +1660,7 @@ namespace Poker
                     }
                 }
             }
-            if (rounds == End && maxLeft == 6)
+            if (rounds == END && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
                 if (!playerStatus.Text.Contains("Fold"))
@@ -1889,38 +1889,23 @@ namespace Poker
                 }
                 if (index == 1)
                 {
-                    botOneChips += int.Parse(tbPot.Text);
-                    tbPlayerChips.Text = botOneChips.ToString();
-                    botOnePanel.Visible = true;
-                    MessageBox.Show("Bot 1 Wins");
+                    CalculateChips(ref botOneChips, ref botOnePanel, "Bot 1 Wins");
                 }
                 if (index == 2)
                 {
-                    botTwoChips += int.Parse(tbPot.Text);
-                    tbPlayerChips.Text = botTwoChips.ToString();
-                    botTwoPanel.Visible = true;
-                    MessageBox.Show("Bot 2 Wins");
+                    CalculateChips(ref botTwoChips, ref botTwoPanel, "Bot 2 Wins");
                 }
                 if (index == 3)
                 {
-                    botThreeChips += int.Parse(tbPot.Text);
-                    tbPlayerChips.Text = botThreeChips.ToString();
-                    botThreePanel.Visible = true;
-                    MessageBox.Show("Bot 3 Wins");
+                    CalculateChips(ref botThreeChips, ref botThreePanel, "Bot 3 Wins");
                 }
                 if (index == 4)
                 {
-                    botFourChips += int.Parse(tbPot.Text);
-                    tbPlayerChips.Text = botFourChips.ToString();
-                    botFourPanel.Visible = true;
-                    MessageBox.Show("Bot 4 Wins");
+                    CalculateChips(ref botFourChips, ref botFourPanel, "Bot 4 Wins");
                 }
                 if (index == 5)
                 {
-                    botFiveChips += int.Parse(tbPot.Text);
-                    tbPlayerChips.Text = botFiveChips.ToString();
-                    botFivePanel.Visible = true;
-                    MessageBox.Show("Bot 5 Wins");
+                    CalculateChips(ref botFiveChips, ref botFivePanel, "Bot 5 Wins");
                 }
                 for (int j = 0; j <= 16; j++)
                 {
@@ -1932,7 +1917,7 @@ namespace Poker
             #endregion
 
             #region FiveOrLessLeft
-            if (abc < 6 && abc > 1 && rounds >= End)
+            if (abc < 6 && abc > 1 && rounds >= END)
             {
                 await Finish(2);
             }
@@ -1940,6 +1925,15 @@ namespace Poker
 
 
         }
+
+        private void CalculateChips(ref int botChips, ref Panel botPanel, string botName)
+        {
+            botChips += int.Parse(tbPot.Text);
+            tbPlayerChips.Text = botChips.ToString();
+            botPanel.Visible = true;
+            MessageBox.Show(botName);
+        }
+
         async Task Finish(int n)
         {
             if (n == 2)
@@ -2006,10 +2000,10 @@ namespace Poker
             height = 0;
             width = 0;
             winners = 0;
-            Flop = 1;
-            Turn = 2;
-            River = 3;
-            End = 4;
+            //Flop = 1;
+            //Turn = 2;
+            //River = 3;
+            //End = 4;
             maxLeft = 6;
 
             lastPlayerPlayed = -1;
